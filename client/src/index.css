@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: white !important;
+  transform: scale(0.75);
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 20px !important;
+  text-shadow:
+    0 0 2px white,
+    0 0 2px white;
+}
