@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useContext, useState } from "react";
 import CartContext from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +7,7 @@ import api from "../../services/api.js";
 const Profile = () => {
   const navigate = useNavigate();
 
-  const { clearCart } = useContext(CartContext);
+  const { clearCartUI } = useContext(CartContext);
 
   // Get User Data From LocalStorage
 
@@ -37,10 +38,10 @@ const Profile = () => {
       });
 
       // Success
-      alert(response.data.message);
+      toast(response.data.message);
 
       // Clear Storage
-      clearCart();
+      clearCartUI();
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
@@ -48,16 +49,16 @@ const Profile = () => {
       navigate("/signup");
     } catch (error) {
       console.log(error);
-      alert(error.response?.data?.message || "Something went wrong");
+      toast(error.response?.data?.message || "Something went wrong");
     }
   };
 
-  // Logout
+  // LOGOUT
   const handleLogout = () => {
-    clearCart();
+    clearCartUI();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login");
+    window.location.href = "/login";
   };
 
   // Save Address
@@ -77,7 +78,7 @@ const Profile = () => {
 
     // Update LocalStorage
     localStorage.setItem("user", JSON.stringify(updatedUser));
-    alert("Address Saved Successfully");
+    toast("Address Saved Successfully");
   };
 
   return (

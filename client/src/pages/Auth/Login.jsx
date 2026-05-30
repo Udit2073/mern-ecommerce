@@ -6,8 +6,11 @@ import toast from "react-hot-toast";
 import api from "../../services/api";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebase";
+import { useContext } from "react";
+import CartContext from "../../context/CartContext";
 
 const Login = () => {
+  const { syncCart } = useContext(CartContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -38,6 +41,7 @@ const Login = () => {
 
       // Save User Data
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      syncCart();
       toast.success("Login Successful");
 
       // Redirect To Profile
@@ -67,6 +71,7 @@ const Login = () => {
 
       // Save User Data
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      syncCart();
       toast.success("Login Successful");
       navigate("/profile");
     } catch (error) {
@@ -80,7 +85,6 @@ const Login = () => {
       {/* Login Card */}
       <div className="bg-white w-full max-w-105 border border-gray-300 rounded-lg shadow-sm">
         <div className="p-5 sm:p-6">
-
           {/* Heading */}
           <h2 className="text-center text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
             Login with ShopHub
@@ -101,7 +105,6 @@ const Login = () => {
 
           {/* Social Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 mt-6">
-
             {/* Facebook */}
             <button className="flex-1 flex items-center justify-center gap-2 border border-gray-300 py-3 rounded-md hover:bg-gray-100 transition cursor-pointer">
               <FaFacebook className="text-blue-600 text-lg" />
@@ -128,8 +131,7 @@ const Login = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-
-          {/* Email */}
+            {/* Email */}
             <input
               type="email"
               name="email"

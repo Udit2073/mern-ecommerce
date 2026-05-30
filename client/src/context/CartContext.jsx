@@ -3,19 +3,32 @@ import { createContext, useEffect, useState } from "react";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  // LOAD FROM LOCAL STORAGE
-  const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem("cartItems");
+  // Get user-specific cart key
+  const getCartKey = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    return user ? `cart_${user._id}` : "cart_guest";
+  };
 
+  // Load cart for current user
+  const loadUserCart = () => {
+    const savedCart = localStorage.getItem(getCartKey());
     return savedCart ? JSON.parse(savedCart) : [];
-  });
+  };
 
-  // SAVE TO LOCAL STORAGE
+  // State
+  const [cartItems, setCartItems] = useState(loadUserCart);
+
+  // Save cart whenever it changes
   useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    localStorage.setItem(getCartKey(), JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // ADD TO CART
+  // Reload cart when user logs in
+  const syncCart = () => {
+    setCartItems(loadUserCart());
+  };
+
+  // Add To Cart
   const addToCart = (product) => {
     const existingItem = cartItems.find(
       (item) =>
@@ -33,7 +46,7 @@ export const CartProvider = ({ children }) => {
     ]);
   };
 
-  // REMOVE FROM CART
+  // Remove From Cart
   const removeFromCart = (id, size) => {
     setCartItems(
       cartItems.filter(
@@ -42,7 +55,7 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  // UPDATE QUANTITY
+  // Update Quantity
   const updateQuantity = (id, size, qty) => {
     setCartItems(
       cartItems.map((item) =>
@@ -53,10 +66,13 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  // CLEAR CART
+  // Clear current cart UI only
   const clearCart = () => {
     setCartItems([]);
-    localStorage.removeItem("cartItems");
+  };
+
+  const clearCartUI = () => {
+    setCartItems([]);
   };
 
   return (
@@ -67,6 +83,8 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         updateQuantity,
         clearCart,
+        clearCartUI,
+        syncCart,
       }}
     >
       {children}

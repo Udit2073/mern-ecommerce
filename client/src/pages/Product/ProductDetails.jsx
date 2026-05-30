@@ -1,8 +1,7 @@
+import toast from "react-hot-toast";
 import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { motion } from "framer-motion";
-
 import CartContext from "../../context/CartContext";
 import WishlistContext from "../../context/WishlistContext";
 
@@ -17,13 +16,9 @@ const ProductDetails = () => {
 
   const [product, setProduct] = useState(null);
 
-  const [animateCart, setAnimateCart] = useState(false);
-
   const [selectedSize, setSelectedSize] = useState("");
 
   const [selectedImage, setSelectedImage] = useState("");
-
-  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -49,37 +44,9 @@ const ProductDetails = () => {
 
   return (
     <div className="overflow-x-hidden">
-      {/* FLYING IMAGE ANIMATION */}
-      {animateCart && (
-        <motion.img
-          src={product.image}
-          alt=""
-          initial={{
-            position: "fixed",
-            top: isMobile ? "65%" : "55%",
-            left: isMobile ? "50%" : "35%",
-            x: isMobile ? "-50%" : "0%",
-            scale: 1,
-            opacity: 1,
-          }}
-          animate={{
-            top: isMobile ? "1px" : "-50px",
-            left: isMobile ? "90%" : "100%",
-            scale: 0.1,
-            opacity: 0,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: "easeInOut",
-          }}
-          className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 object-cover rounded-xl z-9999 pointer-events-none"
-        />
-      )}
       <div className="pl-3 pr-6 sm:pl-5 sm:pr-8 md:pl-8 md:pr-15 py-6 md:py-10 grid lg:grid-cols-[58%_42%] gap-8 lg:gap-10">
-
         {/* LEFT SIDE IMAGE GALLERY */}
         <div className="w-full overflow-hidden">
-
           {/* MAIN IMAGE */}
           <div className="w-full rounded-xl overflow-hidden bg-gray-100">
             <img
@@ -112,7 +79,6 @@ const ProductDetails = () => {
 
         {/* RIGHT SIDE */}
         <div className="h-fit w-full">
-
           {/* PRODUCT NAME */}
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
             {product.name}
@@ -173,12 +139,11 @@ const ProductDetails = () => {
 
           {/* BUTTONS */}
           <div className="flex flex-col sm:flex-row gap-3 mt-6">
-
             {/* ADD TO CART */}
             <button
               onClick={() => {
                 if (!selectedSize) {
-                  alert("Please select a size");
+                  toast.error("Please select a size");
                   return;
                 }
                 const alreadyInCart = cartItems.some(
@@ -194,6 +159,8 @@ const ProductDetails = () => {
                   ...product,
                   selectedSize,
                 });
+                toast.success("Product added to cart 🛒");
+                setAnimateCart(true);
                 setAnimateCart(true);
                 setTimeout(() => {
                   setAnimateCart(false);

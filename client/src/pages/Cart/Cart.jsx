@@ -1,6 +1,6 @@
+import toast from "react-hot-toast";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import CartContext from "../../context/CartContext";
 
 const Cart = () => {
@@ -150,7 +150,7 @@ const Cart = () => {
               const token = localStorage.getItem("token");
 
               if (!token) {
-                alert("Please login first");
+                toast("Please login first");
                 navigate("/login");
                 return;
               }
