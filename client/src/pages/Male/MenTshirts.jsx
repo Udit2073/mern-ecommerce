@@ -1,9 +1,6 @@
+import API from "../../services/api.js";
 import { useEffect, useState } from "react";
-
-import axios from "axios";
-
 import ProductCard from "../../components/Male/ProductCard/ProductCard";
-
 import SidebarFilters from "../../components/Filters/SidebarFilters";
 
 const MenTshirts = () => {
@@ -20,7 +17,7 @@ const MenTshirts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/products");
+        const response = await API.get("/products");
 
         setProducts(response.data);
       } catch (error) {
@@ -138,7 +135,7 @@ const MenTshirts = () => {
           )}
         </div>
       </div>
-      </div>
+    </div>
   );
 };
 

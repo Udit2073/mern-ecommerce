@@ -1,5 +1,5 @@
+import API from "../../../client/src/services/api";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 const EditProduct = () => {
@@ -21,7 +21,7 @@ const EditProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/products");
+        const response = await API.get("/products");
 
         const product = response.data.find((item) => item._id === id);
 
@@ -52,7 +52,7 @@ const EditProduct = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:4000/api/products/${id}`, formData);
+      await API.put(`/products/${id}`, formData);
 
       alert("Product Updated Successfully");
 

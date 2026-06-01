@@ -1,7 +1,6 @@
+import API from "../../services/api.js";
 import { useState, useContext, useEffect } from "react";
-
 import { useNavigate, useLocation } from "react-router-dom";
-
 import {
   HiOutlineMenuAlt3,
   HiOutlineSearch,
@@ -10,11 +9,7 @@ import {
   HiOutlineUser,
   HiOutlineX,
 } from "react-icons/hi";
-
-import axios from "axios";
-
 import CartContext from "../../context/CartContext";
-
 import WishlistContext from "../../context/WishlistContext";
 
 const Navbar = () => {
@@ -61,7 +56,7 @@ const Navbar = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:4000/api/products");
+        const response = await API.get("/products");
 
         // FILTER
         const filtered = response.data.filter((item) => {

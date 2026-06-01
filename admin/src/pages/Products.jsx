@@ -1,7 +1,5 @@
+import API from "../../../client/src/services/api.js";
 import { useEffect, useState } from "react";
-
-import axios from "axios";
-
 import { Link } from "react-router-dom";
 
 const Products = ({ gender, category }) => {
@@ -11,7 +9,7 @@ const Products = ({ gender, category }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/products");
+        const response = await API.get("/products");
 
         setProducts(response.data);
       } catch (error) {
@@ -31,8 +29,7 @@ const Products = ({ gender, category }) => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:4000/api/products/${id}`);
-
+      await API.delete(`/products/${id}`);
       setProducts(products.filter((item) => item._id !== id));
 
       alert("Product Deleted Successfully");

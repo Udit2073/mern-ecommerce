@@ -1,7 +1,7 @@
+import API from "../../services/api.js";
 import toast from "react-hot-toast";
 import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import CartContext from "../../context/CartContext";
 import WishlistContext from "../../context/WishlistContext";
 import "swiper/css";
@@ -25,9 +25,7 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4000/api/products/name/${name}`,
-        );
+       const response = await API.get(`/products/name/${name}`);
 
         setProduct(response.data);
       } catch (error) {

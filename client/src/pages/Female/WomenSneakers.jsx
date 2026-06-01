@@ -1,6 +1,5 @@
+import API from "../../services/api.js";
 import { useEffect, useState } from "react";
-import axios from "axios";
-
 import ProductCard from "../../components/Female/ProductCard/ProductCard";
 import SidebarFilters from "../../components/Filters/SidebarFilters";
 
@@ -18,7 +17,7 @@ const WomenSneakers = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/products");
+        const response = await API.get("/products");
 
         setProducts(response.data);
       } catch (error) {
@@ -55,17 +54,17 @@ const WomenSneakers = () => {
 
   // WOMEN CATEGORIES
 
-    const categories = [
-      "tshirts",
-      "shirts",
-      "tops",
-      "pants",
-      "joggers",
-      "denims",
-      "dresses",
-      "sneakers",
-      "perfumes",
-    ];
+  const categories = [
+    "tshirts",
+    "shirts",
+    "tops",
+    "pants",
+    "joggers",
+    "denims",
+    "dresses",
+    "sneakers",
+    "perfumes",
+  ];
 
   return (
     <div className="px-4 md:px-8 py-8">

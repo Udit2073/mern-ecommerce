@@ -1,7 +1,6 @@
+import API from "../../services/api.js";
 import { useContext, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import CartContext from "../../context/CartContext";
 
 const Checkout = () => {
@@ -21,12 +20,9 @@ const Checkout = () => {
 
   const handleRazorpayPayment = async () => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:4000/api/payment/create-order",
-        {
-          amount: total,
-        },
-      );
+      const { data } = await API.post("/payment/create-order", {
+        amount: total,
+      });
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,

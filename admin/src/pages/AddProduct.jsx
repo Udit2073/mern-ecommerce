@@ -1,5 +1,5 @@
+import API from "../../services/api.js";
 import { useState } from "react";
-import axios from "axios";
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -28,10 +28,7 @@ const AddProduct = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/products",
-        formData,
-      );
+      const response = await API.post("/products", formData);
 
       console.log(response.data);
 
