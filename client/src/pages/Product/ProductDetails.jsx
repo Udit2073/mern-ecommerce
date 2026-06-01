@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CartContext from "../../context/CartContext";
 import WishlistContext from "../../context/WishlistContext";
+import "swiper/css";
+import "swiper/css/pagination";
 
 const ProductDetails = () => {
   const { name } = useParams();
@@ -18,7 +20,7 @@ const ProductDetails = () => {
 
   const [selectedSize, setSelectedSize] = useState("");
 
-  const [selectedImage, setSelectedImage] = useState("");
+  // const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -44,48 +46,52 @@ const ProductDetails = () => {
 
   return (
     <div className="overflow-x-hidden">
-      <div className="pl-3 pr-6 sm:pl-5 sm:pr-8 md:pl-8 md:pr-15 py-6 md:py-10 grid lg:grid-cols-[58%_42%] gap-8 lg:gap-10">
+      <div className="px-0 md:px-8 py-0 md:py-10 grid lg:grid-cols-[58%_42%] gap-8 lg:gap-10">
         {/* LEFT SIDE IMAGE GALLERY */}
-        <div className="w-full overflow-hidden">
-          {/* MAIN IMAGE */}
-          <div className="w-full rounded-xl overflow-hidden bg-gray-100">
-            <img
-              src={selectedImage || product.image}
-              alt={product.name}
-              className="w-full h-87.5 sm:h-125 md:h-162.5 lg:h-180 object-cover"
-            />
+        <div className="w-full mt-3">
+          {/* MOBILE VIEW - SLIDER */}
+          <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+            {[product.image, ...(product.images || [])]
+              .filter(Boolean)
+              .map((img, index) => (
+                <div key={index} className="min-w-full snap-center">
+                  <img
+                    src={img}
+                    alt={`${product.name}-${index}`}
+                    className="w-full h-125 object-cover"
+                  />
+                </div>
+              ))}
           </div>
 
-          {/* THUMBNAILS */}
-          <div className="flex gap-3 mt-4 overflow-x-auto pb-2">
+          {/* DESKTOP & TABLET VIEW - GRID */}
+          <div className="hidden md:grid md:grid-cols-2 gap-3">
             {[product.image, ...(product.images || [])]
-              .filter((img) => img)
+              .filter(Boolean)
               .map((img, index) => (
-                <button
+                <div
                   key={index}
-                  onClick={() => setSelectedImage(img)}
-                  className={`min-w-20 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2 shrink-0 transition
-          ${selectedImage === img ? "border-black" : "border-gray-200"}`}
+                  className="overflow-hidden bg-gray-100 rounded-lg"
                 >
                   <img
                     src={img}
-                    alt=""
-                    className="w-full h-full object-cover"
+                    alt={`${product.name}-${index}`}
+                    className="w-full object-cover hover:scale-105 transition duration-300"
                   />
-                </button>
+                </div>
               ))}
           </div>
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="h-fit w-full">
+        <div className="px-4 md:px-0 h-fit w-full lg:sticky lg:top-5">
           {/* PRODUCT NAME */}
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
             {product.name}
           </h1>
 
           {/* CATEGORY */}
-          <p className="text-gray-500 text-sm mt-1 capitalize">
+          <p className="text-gray-500 text-sm mt-2 capitalize">
             {product.category}
           </p>
 
@@ -93,32 +99,34 @@ const ProductDetails = () => {
           <div className="border-b mt-4"></div>
 
           {/* PRICE */}
-          <h2 className="text-2xl md:text-3xl mt-6 font-bold">
+          <h2 className="text-2xl md:text-3xl mt-5 font-bold">
             ₹ {product.price}
           </h2>
+
           <p className="text-gray-500 text-sm mt-1">Price incl. of all taxes</p>
 
           {/* SIZE */}
           <div className="mt-6">
-            <p className="font-semibold text-sm">
-              Please select a size.
-              <span className="text-blue-600 ml-2 cursor-pointer">
+            <div className="flex justify-between items-center">
+              <p className="font-semibold text-sm">Please select a size</p>
+
+              <span className="text-blue-600 text-sm cursor-pointer">
                 SIZE CHART
               </span>
-            </p>
+            </div>
 
             {/* SIZE BUTTONS */}
-            <div className="flex gap-3 mt-3 flex-wrap">
+            <div className="flex flex-wrap gap-2 mt-3">
               {["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`w-12 h-10 border rounded flex items-center justify-center text-xs transition
-              ${
-                selectedSize === size
-                  ? "bg-black text-white border-black"
-                  : "hover:border-black"
-              }`}
+                  className={`w-11 h-10 sm:w-12 sm:h-10 border rounded flex items-center justify-center text-xs transition
+          ${
+            selectedSize === size
+              ? "bg-black text-white border-black"
+              : "hover:border-black"
+          }`}
                 >
                   {size}
                 </button>
@@ -127,10 +135,10 @@ const ProductDetails = () => {
           </div>
 
           {/* QUANTITY */}
-          <div className="mt-8 flex items-center gap-4">
-            <span className="text-sm">Quantity</span>
+          <div className="mt-6">
+            <p className="text-sm mb-2">Quantity</p>
 
-            <select className="border px-3 py-1 rounded outline-none">
+            <select className="border px-3 py-2 rounded outline-none w-full sm:w-32">
               {[1, 2, 3, 4, 5].map((qty) => (
                 <option key={qty}>{qty}</option>
               ))}
@@ -138,7 +146,7 @@ const ProductDetails = () => {
           </div>
 
           {/* BUTTONS */}
-          <div className="flex flex-col sm:flex-row gap-3 mt-6">
+          <div className="flex flex-col gap-3 mt-6">
             {/* ADD TO CART */}
             <button
               onClick={() => {
@@ -146,35 +154,26 @@ const ProductDetails = () => {
                   toast.error("Please select a size");
                   return;
                 }
+
                 const alreadyInCart = cartItems.some(
                   (item) =>
                     item._id === product._id &&
                     item.selectedSize === selectedSize,
                 );
+
                 if (alreadyInCart) {
                   navigate("/cart");
                   return;
                 }
+
                 addToCart({
                   ...product,
                   selectedSize,
                 });
+
                 toast.success("Product added to cart 🛒");
-                setAnimateCart(true);
-                setAnimateCart(true);
-                setTimeout(() => {
-                  setAnimateCart(false);
-                }, 1000);
               }}
-              className={`h-12 w-full rounded font-semibold text-sm transition
-          ${
-            cartItems.some(
-              (item) =>
-                item._id === product._id && item.selectedSize === selectedSize,
-            )
-              ? "bg-black text-white hover:bg-gray-800"
-              : "bg-red-500 hover:bg-red-600 text-white"
-          }`}
+              className="h-12 w-full bg-black text-white rounded font-semibold text-sm"
             >
               {cartItems.some(
                 (item) =>
@@ -189,18 +188,18 @@ const ProductDetails = () => {
             <button
               onClick={() => toggleWishlist(product)}
               className={`h-12 w-full rounded font-semibold text-sm transition
-  ${
-    isWishlisted
-      ? "bg-pink-500 text-white"
-      : "border border-pink-500 text-pink-500 hover:bg-pink-50"
-  }`}
+      ${
+        isWishlisted
+          ? "bg-pink-500 text-white"
+          : "border border-pink-500 text-pink-500"
+      }`}
             >
               {isWishlisted ? "REMOVE FROM WISHLIST" : "ADD TO WISHLIST"}
             </button>
           </div>
 
           {/* DELIVERY */}
-          <div className="mt-10">
+          <div className="mt-8">
             <h3 className="font-semibold text-lg mb-4">Delivery Details</h3>
 
             <div className="flex border rounded overflow-hidden px-3">
@@ -223,32 +222,32 @@ const ProductDetails = () => {
 
           {/* ACCORDION */}
           <div className="mt-6 border rounded overflow-hidden text-sm">
-            {/* PRODUCT DETAILS */}
             <details open className="border-b">
               <summary className="cursor-pointer px-4 py-3 font-semibold">
                 Product Details
               </summary>
+
               <div className="px-4 pb-4 text-gray-600 leading-6">
                 Premium quality oversized t-shirt with soft cotton fabric and
                 relaxed fit.
               </div>
             </details>
 
-            {/* DESCRIPTION */}
             <details className="border-b">
               <summary className="cursor-pointer px-4 py-3 font-semibold">
                 Product Description
               </summary>
+
               <div className="px-4 pb-4 text-gray-600 leading-6">
                 {product.description}
               </div>
             </details>
 
-            {/* ARTIST */}
             <details>
               <summary className="cursor-pointer px-4 py-3 font-semibold">
                 Artist's Details
               </summary>
+
               <div className="px-4 pb-4 text-gray-600 leading-6">
                 Designed exclusively for ShopHub streetwear collection.
               </div>

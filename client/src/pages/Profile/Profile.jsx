@@ -82,13 +82,13 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#f5f5f5] py-4 sm:py-6 px-3 sm:px-5 md:px-8 lg:px-10">
+    <div className="w-full min-h-screen bg-[#f5f5f5] py-4 px-0 md:px-8">
       {/* Main Container */}
 
-      <div className="max-w-350 mx-auto grid grid-cols-1 xl:grid-cols-[300px_1fr] gap-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-[300px_1fr] gap-6">
         {/* LEFT SIDEBAR */}
 
-        <div className="space-y-5">
+        <div className="hidden xl:block space-y-5">
           {/* User Card */}
 
           <div className="bg-white border p-5 sm:p-6 rounded-md">
@@ -111,8 +111,8 @@ const Profile = () => {
             {[
               "Orders",
               "Gift Vouchers",
-              "TSS Points",
-              "TSS Money",
+              "TSH Points",
+              "TSH Money",
               "FAQs",
               "Profile",
             ].map((item, index) => (
@@ -154,7 +154,7 @@ const Profile = () => {
           {/* Header */}
 
           <div className="border-b px-4 sm:px-6 md:px-10 py-5 sm:py-6">
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-700">
+            <h2 className="text-center text-lg sm:text-xl font-bold text-gray-800">
               EDIT PROFILE
             </h2>
           </div>
@@ -177,25 +177,15 @@ const Profile = () => {
               />
             </div>
 
-            {/* General Information */}
-
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-6 sm:mb-8">
-              General Information
-            </h3>
-
             {/* Form Grid */}
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            <div className="space-y-6">
               {/* LEFT */}
-
               <div className="space-y-6">
                 {/* Full Name */}
-
                 <div>
                   <label className="block mb-2 font-medium text-sm sm:text-base">
                     Full Name
                   </label>
-
                   <input
                     type="text"
                     value={user?.name || ""}
@@ -282,7 +272,7 @@ const Profile = () => {
             <div className="flex justify-center mt-10 sm:mt-12">
               <button
                 onClick={handleSave}
-                className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white px-10 sm:px-16 py-3 sm:py-4 rounded font-semibold transition text-sm sm:text-base"
+                className="w-60 bg-teal-700 hover:bg-teal-800 text-white py-3 rounded font-semibold transition"
               >
                 SAVE
               </button>
